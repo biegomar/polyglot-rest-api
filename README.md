@@ -24,3 +24,7 @@ The API will be available at [http://localhost:5100](http://localhost:5100) by d
 
 **Note:**  
 User data is stored in memory and will be lost when the application restarts.
+
+---
+
+*This README was generated with the help of AI based on the project's source code and structure.*

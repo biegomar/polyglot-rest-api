@@ -26,5 +26,29 @@ The API will be available at [http://localhost:5100](http://localhost:5100) by d
 User data is stored in memory and will be lost when the application restarts.
 
 ---
+## Spring Boot – UserManagement
 
+The `spring-boot` project provides a REST API for user management, implemented with Java and Spring Boot. It offers endpoints for creating, retrieving, updating, and deleting users (CRUD operations). The application uses a simple in-memory `HashMap` to store user data for demonstration and development purposes.
+
+**Features:**
+- RESTful API using Spring Boot
+- In-memory storage with Java `HashMap` for easy setup
+- Example user endpoints:  
+  - `GET /api/users` – Retrieve all users  
+  - `POST /api/users` – Create a new user  
+  - `PUT /api/users/{id}` – Update a user  
+  - `DELETE /api/users/{id}` – Delete a user
+- Dockerfile included for containerized deployment
+
+**How to run locally:**
+```bash
+cd spring-boot
+./mvnw spring-boot:run
+```
+The API will be available at [http://localhost:8080](http://localhost:8080) by default.
+
+**Note:**  
+User data is stored in an in-memory `HashMap` and will be lost when the application restarts.
+
+---
 *This README was generated with the help of AI based on the project's source code and structure.*

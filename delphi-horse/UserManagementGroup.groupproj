@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{BBC7022E-6701-4EA4-A95B-E9F55C5B7CBC}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="UserManagement.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="UserManagement">
+        <MSBuild Projects="UserManagement.dproj"/>
+    </Target>
+    <Target Name="UserManagement:Clean">
+        <MSBuild Projects="UserManagement.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="UserManagement:Make">
+        <MSBuild Projects="UserManagement.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="UserManagement"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="UserManagement:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="UserManagement:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

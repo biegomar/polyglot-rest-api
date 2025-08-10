@@ -38,6 +38,14 @@ bin/
 # IDEs
 .vscode/
 
+#Delphi
+*.dsk
+__history
+__recovery
+
+# Delphi Boss
+modules
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

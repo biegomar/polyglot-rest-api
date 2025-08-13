@@ -468,3 +468,5 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+delphi-horse/UserManagement.delphilsp.json

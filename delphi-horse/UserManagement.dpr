@@ -10,7 +10,8 @@ uses
   Model in 'Model\Model.pas',
   Horse,
   Horse.Jhonson,
-  Horse.CORS;
+  Horse.CORS,
+  Configuration in 'Configuration\Configuration.pas';
 
 begin
   try

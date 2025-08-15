@@ -1,4 +1,4 @@
-unit Controller;
+ï»¿unit Controller;
 
 interface
 
@@ -6,8 +6,14 @@ uses
   System.JSON,
   System.SysUtils,
   System.Generics.Collections,
+  Neon.Core.Types,
+  Neon.Core.Attributes,
+  Neon.Core.Persistence,
+  Neon.Core.Persistence.JSON,
+  Neon.Core.Utils,
   Horse,
-  Model;
+  Model,
+  Configuration;
 
 type
 
@@ -127,7 +133,7 @@ begin
     Exit;
   end;
 
-  // User-Info für Log speichern bevor er gelöscht wird
+  // User-Info fï¿½r Log speichern bevor er gelï¿½scht wird
   FUsers.TryGetValue(UserId, User);
   FUsers.Remove(UserId);
 
@@ -143,30 +149,27 @@ end;
 
 procedure TUserController.GetAllUsers(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
-  JsonArray: TJSONArray;
-  JsonUser: TJSONObject;
+
+  JsonUser: TJSONValue;
   User: TUser;
+  UserList: TObjectList<TUser>;
 begin
-  JsonArray := TJSONArray.Create;
+  UserList := TObjectList<TUser>.Create();
 
   for User in FUsers.Values do
   begin
-    JsonUser := TJSONObject.Create;
-    JsonUser.AddPair('id', TJSONNumber.Create(User.ID));
-    JsonUser.AddPair('name', User.Name);
-    JsonUser.AddPair('email', User.Email);
-
-    JsonArray.AddElement(JsonUser);
+    UserList.Add(User);
   end;
 
+  JsonUser := TNeon.ObjectToJSON(UserList, NeonConfig);
   LogRequest('GET', '/api/users', '200 OK', Format('(%d users)', [FUsers.Count]));
-  Res.Send<TJSONArray>(JsonArray);
+  Res.Send<TJSONValue>(JsonUser);
 
 end;
 
 procedure TUserController.GetUser(Req: THorseRequest; Res: THorseResponse; Next: TProc);
 var
-  JsonUser: TJSONObject;
+  JsonUser: TJSONValue;
   UserId: Integer;
   User: TUser;
 begin
@@ -185,25 +188,24 @@ begin
     Exit;
   end;
 
-  JsonUser := TJSONObject.Create;
-  JsonUser.AddPair('id', TJSONNumber.Create(User.ID));
-  JsonUser.AddPair('name', User.Name);
-  JsonUser.AddPair('email', User.Email);
+  JsonUser := TNeon.ObjectToJSON(User, NeonConfig);
 
   LogRequest('GET', '/api/users/' + UserId.ToString, '200 OK', 'User: ' + User.Name);
-  Res.Send<TJSONObject>(JsonUser);
+  Res.Send<TJSONValue>(JsonUser);
 end;
 
 procedure TUserController.InitSampleData;
 var
   User: TUser;
 begin
+  User := TUser.Create;
   User.ID := FNextID;
   User.Name := 'Max Mustermann';
   User.Email := 'max@example.com';
   FUsers.Add(FNextID, User);
   Inc(FNextID);
 
+  User := TUser.Create;
   User.ID := FNextID;
   User.Name := 'Anna Schmidt';
   User.Email := 'anna@example.com';

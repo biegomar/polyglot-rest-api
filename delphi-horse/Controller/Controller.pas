@@ -27,7 +27,8 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    // CRUD Operations
+    class procedure MapRoutes;
+
     procedure GetAllUsers(Req: THorseRequest; Res: THorseResponse; Next: TProc);
     procedure GetUser(Req: THorseRequest; Res: THorseResponse; Next: TProc);
     procedure CreateUser(Req: THorseRequest; Res: THorseResponse; Next: TProc);
@@ -39,6 +40,8 @@ type
   private
     procedure LogRequest(const Method, Path, Status: string; const ExtraInfo: string = '');
   public
+    class procedure MapRoutes;
+
     procedure GetInfo(Req: THorseRequest; Res: THorseResponse; Next: TProc);
     procedure GetHealth(Req: THorseRequest; Res: THorseResponse; Next: TProc);
   end;
@@ -272,6 +275,15 @@ begin
   Writeln(Format('[%s] %s %s - %s %s', [FormatDateTime('hh:nn:ss', Now), Method, Path, Status, ExtraInfo]));
 end;
 
+class procedure TUserController.MapRoutes;
+begin
+  THorse.Get('/api/users', UserController.GetAllUsers);
+  THorse.Get('/api/users/:id', UserController.GetUser);
+  THorse.Post('/api/users', UserController.CreateUser);
+  THorse.Put('/api/users/:id', UserController.UpdateUser);
+  THorse.Delete('/api/users/:id', UserController.DeleteUser);
+end;
+
 { TInfoController }
 
 procedure TInfoController.GetHealth(Req: THorseRequest; Res: THorseResponse; Next: TProc);
@@ -300,5 +312,15 @@ procedure TInfoController.LogRequest(const Method, Path, Status, ExtraInfo: stri
 begin
   Writeln(Format('[%s] %s %s - %s %s', [FormatDateTime('hh:nn:ss', Now), Method, Path, Status, ExtraInfo]));
 end;
+
+class procedure TInfoController.MapRoutes;
+begin
+  THorse.Get('/api/info', InfoController.GetInfo);
+  THorse.Get('/api/health', InfoController.GetHealth);
+end;
+
+initialization
+  UserController := TUserController.Create;
+  InfoController := TInfoController.Create;
 
 end.

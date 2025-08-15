@@ -40,6 +40,8 @@ bin/
 
 #Delphi
 *.dsk
+*.identcache
+*.delphilsp.*
 __history
 __recovery
 
